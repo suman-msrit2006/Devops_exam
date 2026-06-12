@@ -9,7 +9,7 @@ A real-time dashboard for monitoring and predicting hospital resource shortages.
 *   **Interactive Scenarios**: Trigger simulated emergencies (Oxygen Crisis, ICU Surge, Staff Shortage) to test system resilience.
 *   **Historical Trends**: Visual charts using Chart.js to analyze resource fluctuations over time.
 *   **Configurable Thresholds**: Adjust critical limits and safety ratios via the Settings page.....
-*   **Smart Recommendations**: Automated suggestions based on current risk levels (e.g., "Divert ambulances", "Order resupply").
+*   **Smart Recommendations**: Automated suggestions based on current risk levels (e.g., "Divert ambulances", "Order resupply")....
 
 ## 🛠️ Tech Stack
 
