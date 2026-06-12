@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name.title() }} Department - Hospital Failure Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🏥 FailurePredictor</div>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/trends">Trends</a>
+            <a href="/history">Alert History</a>
+            <a href="/settings">Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>🏥 {{ name.title() }} Department</h1>
+            <p class="subtitle">Detailed real-time analysis</p>
+        </header>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Live Metrics</h2>
+                <div class="status-indicator" id="dept-status"></div>
+            </div>
+            <div class="metrics" id="dept-metrics">
+                <p>Loading data...</p>
+            </div>
+            <div class="alert-box" id="dept-alert">System Normal</div>
+        </div>
+    </div>
+
+    <script>
+        const deptName = "{{ name }}";
+
+        function updateDept() {
+            fetch('/api/metrics')
+                .then(response => response.json())
+                .then(data => {
+                    const metrics = data.metrics;
+                    const analysis = data.analysis;
+                    let deptData = {};
+                    let deptAnalysis = {};
+
+                    // Map generic metrics to specific departments
+                    if (deptName === 'oxygen') {
+                        deptData = {
+                            "Level": metrics.oxygen_level + "%",
+                            "Consumption": metrics.oxygen_consumption + " /hr",
+                            "Refill Rate": metrics.oxygen_refill + " /hr"
+                        };
+                        deptAnalysis = analysis.oxygen;
+                    } else if (deptName === 'beds') {
+                        deptData = {
+                            "Bed Occupancy": metrics.bed_occupancy + "%",
+                            "ICU Occupancy": metrics.icu_occupancy + "%"
+                        };
+                        deptAnalysis = analysis.beds;
+                    } else if (deptName === 'staff') {
+                        deptData = {
+                            "Available Staff": metrics.staff_available,
+                            "Patient Inflow": metrics.patient_inflow + " /hr"
+                        };
+                        deptAnalysis = analysis.staff;
+                    } else if (deptName === 'pharmacy') {
+                        deptData = {
+                            "Stock Level": metrics.pharmacy_stock + " units",
+                            "Consumption": metrics.pharmacy_consumption + " /hr",
+                            "Restock Rate": metrics.pharmacy_restock + " /hr"
+                        };
+                        deptAnalysis = analysis.pharmacy;
+                    } else if (deptName === 'ventilators') {
+                        deptData = {
+                            "In Use": metrics.ventilators_in_use,
+                            "Total": metrics.total_ventilators,
+                            "Usage": Math.round((metrics.ventilators_in_use / metrics.total_ventilators) * 100) + "%"
+                        };
+                        deptAnalysis = analysis.ventilators;
+                    }
+
+                    // Render Metrics
+                    const metricsContainer = document.getElementById('dept-metrics');
+                    metricsContainer.innerHTML = '';
+                    for (const [key, value] of Object.entries(deptData)) {
+                        const p = document.createElement('p');
+                        p.innerHTML = `${key}: <span>${value}</span>`;
+                        metricsContainer.appendChild(p);
+                    }
+
+                    // Update Status
+                    const statusEl = document.getElementById('dept-status');
+                    const alertEl = document.getElementById('dept-alert');
+
+                    statusEl.className = 'status-indicator';
+                    alertEl.className = 'alert-box';
+
+                    statusEl.classList.add(`status-${deptAnalysis.color}`);
+                    alertEl.textContent = deptAnalysis.message;
+
+                    if (deptAnalysis.status === 'Critical') {
+                        alertEl.classList.add('alert-critical');
+                    } else if (deptAnalysis.status === 'Warning') {
+                        alertEl.classList.add('alert-warning');
+                    }
+                });
+        }
+
+        setInterval(updateDept, 2000);
+        updateDept();
+    </script>
+</body>
+
+</html>

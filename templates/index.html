@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Resource Failure Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-heart-pulse"></i> FailurePredictor
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/trends"><i class="fa-solid fa-chart-area"></i> Trends</a>
+            <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/settings"><i class="fa-solid fa-sliders"></i> Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Hospital Resource Failure Predictor</h1>
+            <p class="subtitle">Real-time Logic & Threshold Monitoring System</p>
+            <div id="timestamp" class="timestamp">--:--:--</div>
+        </header>
+
+        <!-- Demo Controls -->
+        <div class="controls-section">
+            <h3><i class="fa-solid fa-gamepad"></i> Simulation Controls</h3>
+            <div class="button-group">
+                <button onclick="triggerScenario('normal')" class="btn btn-normal">Reset Normal</button>
+                <button onclick="triggerScenario('oxygen_fail')" class="btn btn-danger">Trigger Oxygen Crisis</button>
+                <button onclick="triggerScenario('icu_surge')" class="btn btn-warning">Trigger ICU Surge</button>
+                <button onclick="triggerScenario('staff_shortage')" class="btn btn-warning">Trigger Staff
+                    Shortage</button>
+            </div>
+        </div>
+
+        <!-- Risk Score & Recommendations Section -->
+        <div class="risk-section">
+            <div class="card risk-card">
+                <div class="risk-gauge-container">
+                    <div class="risk-gauge" id="risk-gauge">
+                        <div class="risk-value" id="risk-score">--%</div>
+                    </div>
+                </div>
+                <div class="risk-details">
+                    <h2>Overall Risk Level</h2>
+                    <p id="risk-label" class="risk-label">CALCULATING</p>
+                    <p class="risk-desc">Real-time analysis of all hospital resources</p>
+                </div>
+            </div>
+
+            <div class="card recommendations-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-lightbulb"></i> Smart Recommendations</h2>
+                </div>
+                <div id="recommendations-list" class="recommendations-list">
+                    <!-- Recommendations will be injected here -->
+                    <div class="rec-item rec-low">
+                        <div class="rec-content">
+                            <strong>System Normal</strong>
+                            <span>Monitoring active...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Oxygen Section -->
+            <div class="card" id="card-oxygen" onclick="window.location.href='/department/oxygen'"
+                style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-lungs"></i> Oxygen Supply</h2>
+                    <div class="status-indicator" id="status-oxygen"></div>
+                </div>
+                <div class="metrics">
+                    <p>Level: <span id="val-oxygen-level">95</span>% <small class="threshold">(Crit: &lt;<span
+                                id="thr-oxygen">30</span>%)</small></p>
+                    <p>Consumption: <span id="val-oxygen-cons">12</span> /hr</p>
+                    <p>Refill: <span id="val-oxygen-refill">14</span> /hr</p>
+                </div>
+                <div class="alert-box" id="alert-oxygen">System Normal</div>
+            </div>
+
+            <!-- Beds Section -->
+            <div class="card" id="card-beds" onclick="window.location.href='/department/beds'" style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-bed-pulse"></i> Bed & ICU Capacity</h2>
+                    <div class="status-indicator" id="status-beds"></div>
+                </div>
+                <div class="metrics">
+                    <p>Bed Occupancy: <span id="val-bed-occ">65</span>% <small class="threshold">(Crit: &gt;<span
+                                id="thr-bed">85</span>%)</small></p>
+                    <p>ICU Occupancy: <span id="val-icu-occ">40</span>% <small class="threshold">(Crit: &gt;<span
+                                id="thr-icu">80</span>%)</small></p>
+                </div>
+                <div class="alert-box" id="alert-beds">System Normal</div>
+            </div>
+
+            <!-- Staff Section -->
+            <div class="card" id="card-staff" onclick="window.location.href='/department/staff'"
+                style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-user-doctor"></i> Staffing Levels</h2>
+                    <div class="status-indicator" id="status-staff"></div>
+                </div>
+                <div class="metrics">
+                    <p>Available Staff: <span id="val-staff-avail">15</span></p>
+                    <p>Patient Inflow: <span id="val-pat-inflow">10</span> /hr <small class="threshold">(Safe Ratio:
+                            1:<span id="thr-staff">4</span>)</small></p>
+                </div>
+                <div class="alert-box" id="alert-staff">System Normal</div>
+            </div>
+
+            <!-- Pharmacy Section -->
+            <div class="card" id="card-pharmacy" onclick="window.location.href='/department/pharmacy'"
+                style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-pills"></i> Pharmacy Stock</h2>
+                    <div class="status-indicator" id="status-pharmacy"></div>
+                </div>
+                <div class="metrics">
+                    <p>Stock Level: <span id="val-pharm-stock">200</span> units <small class="threshold">(Min: <span
+                                id="thr-pharm">50</span>)</small></p>
+                    <p>Consumption: <span id="val-pharm-cons">5</span> /hr</p>
+                    <p>Restock: <span id="val-pharm-restock">5</span> /hr</p>
+                </div>
+                <div class="alert-box" id="alert-pharmacy">System Normal</div>
+            </div>
+
+            <!-- Blood Bank Section -->
+            <div class="card" id="card-blood" onclick="window.location.href='/department/blood'"
+                style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-droplet" style="color: var(--danger-color);"></i> Blood Bank</h2>
+                    <div class="status-indicator" id="status-blood"></div>
+                </div>
+                <div class="metrics">
+                    <p>Stock: <span id="val-blood-stock">80</span> units <small class="threshold">(Crit: &lt;<span
+                                id="thr-blood">20</span>)</small></p>
+                    <p>Usage: <span id="val-blood-cons">3</span> /hr</p>
+                    <p>Restock: <span id="val-blood-restock">3</span> /hr</p>
+                </div>
+                <div class="alert-box" id="alert-blood">System Normal</div>
+            </div>
+
+            <!-- Ventilator Section -->
+            <div class="card" id="card-ventilators" onclick="window.location.href='/department/ventilators'"
+                style="cursor: pointer;">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-fan"></i> Ventilators</h2>
+                    <div class="status-indicator" id="status-ventilators"></div>
+                </div>
+                <div class="metrics">
+                    <p>In Use: <span id="val-vent-use">5</span> / <span id="val-vent-total">20</span></p>
+                    <p>Usage: <span id="val-vent-percent">25</span>% <small class="threshold">(Crit: &gt;<span
+                                id="thr-vent">80</span>%)</small></p>
+                </div>
+                <div class="alert-box" id="alert-ventilators">System Normal</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+
+</html>

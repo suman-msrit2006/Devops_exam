@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Trends - Failure Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-heart-pulse"></i> FailurePredictor
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/trends" class="active"><i class="fa-solid fa-chart-area"></i> Trends</a>
+            <a href="/history"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/settings"><i class="fa-solid fa-sliders"></i> Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Historical Trends</h1>
+            <p class="subtitle">Analyze resource fluctuations over time</p>
+        </header>
+
+        <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));">
+            <!-- Oxygen Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-lungs"></i> Oxygen Levels</h2>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas id="chartOxygen"></canvas>
+                </div>
+            </div>
+
+            <!-- Occupancy Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-bed-pulse"></i> Occupancy Rates</h2>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas id="chartOccupancy"></canvas>
+                </div>
+            </div>
+
+            <!-- Staff Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-user-doctor"></i> Staff vs Inflow</h2>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas id="chartStaff"></canvas>
+                </div>
+            </div>
+
+            <!-- Stock Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-boxes-stacked"></i> Medical Stocks</h2>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas id="chartStock"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/trends.js') }}"></script>
+</body>
+
+</html>

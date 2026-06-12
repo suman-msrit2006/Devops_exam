@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert History - Hospital Resource Failure Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-heart-pulse"></i> FailurePredictor
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/trends"><i class="fa-solid fa-chart-area"></i> Trends</a>
+            <a href="/history" class="active"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/settings"><i class="fa-solid fa-sliders"></i> Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Alert History</h1>
+            <p class="subtitle">Audit log of system alerts and critical events</p>
+        </header>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Resource</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if alerts %}
+                    {% for alert in alerts %}
+                    <tr>
+                        <td style="font-family: 'JetBrains Mono', monospace;">{{ alert.timestamp }}</td>
+                        <td>{{ alert.resource }}</td>
+                        <td>{{ alert.message }}</td>
+                        <td>
+                            {% if alert.status == 'Critical' %}
+                            <span class="rec-action"
+                                style="background: rgba(248, 113, 113, 0.2); color: #fca5a5;">CRITICAL</span>
+                            {% elif alert.status == 'Warning' %}
+                            <span class="rec-action"
+                                style="background: rgba(250, 204, 21, 0.2); color: #fde047;">WARNING</span>
+                            {% else %}
+                            <span class="rec-action"
+                                style="background: rgba(74, 222, 128, 0.2); color: #86efac;">NORMAL</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                            No alerts recorded yet. System is monitoring...
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
