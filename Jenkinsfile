@@ -8,6 +8,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout SCM') {
             steps {
                 checkout scm
@@ -70,7 +71,17 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                bat "docker push %DOCKER_IMAGE%:latest"
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker push %DOCKER_IMAGE%:latest
+                        docker logout
+                    """
+                }
             }
         }
 
