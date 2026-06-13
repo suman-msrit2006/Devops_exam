@@ -128,7 +128,6 @@ A real-time dashboard for monitoring and predicting hospital resource shortages.
 *   **Smart Recommendations**: Automated suggestions based on current risk levels (e.g., "Divert ambulances", "Order resupply")....
 
 ## 🛠️ Tech Stack
-
 *   **Backend**: Python, Flask
 *   **Frontend**: HTML5, CSS3 (Premium Dark Mode), JavaScript
 *   **Visualization**: Chart.js
