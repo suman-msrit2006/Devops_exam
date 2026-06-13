@@ -2,7 +2,7 @@
 
 A real-time dashboard for monitoring and predicting hospital resource shortages. This application simulates a hospital environment, tracking critical metrics like oxygen levels, bed occupancy, staff availability, and medical stocks to provide early warnings and actionable recommendations.
 
-## 🚀 Features
+## 🚀 Features and other
 
 *   **Real-time Dashboard**: Live monitoring of Oxygen, Beds/ICU, Staff, Pharmacy, Blood Bank, and Ventilators.
 *   **Predictive Analysis**: Logic engine that calculates risk scores and identifies critical trends (e.g., Consumption > Refill).
