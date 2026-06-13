@@ -28,6 +28,7 @@ pipeline {
 
         stage('OWASP Dependency Check') {
             steps {
+                bat 'if not exist dependency-check-report mkdir dependency-check-report'
                 dependencyCheck(
                     additionalArguments: '--scan . --format HTML --format XML --out dependency-check-report',
                     odcInstallation: 'OWASP-Dependency-Check'
@@ -45,15 +46,18 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat """
-                        sonar-scanner ^
-                        -Dsonar.projectKey=voise-hospital-predictor ^
-                        -Dsonar.projectName="VOISE Hospital Predictor" ^
-                        -Dsonar.sources=. ^
-                        -Dsonar.inclusions=**/*.py ^
-                        -Dsonar.exclusions=**/__pycache__/**,**/*.pyc
-                    """
+                script {
+                    def scannerHome = tool 'SonarScanner'
+                    withSonarQubeEnv('SonarQube') {
+                        bat """
+                            "${scannerHome}\\bin\\sonar-scanner.bat" ^
+                            -Dsonar.projectKey=voise-hospital-predictor ^
+                            -Dsonar.projectName="VOISE Hospital Predictor" ^
+                            -Dsonar.sources=. ^
+                            -Dsonar.inclusions=**/*.py ^
+                            -Dsonar.exclusions=**/__pycache__/**,**/*.pyc
+                        """
+                    }
                 }
             }
         }
