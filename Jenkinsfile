@@ -4,7 +4,7 @@ pipeline {
       environment {
         DOCKER_IMAGE = "ktmlover/voise-hospital-predictor"
         CONTAINER_NAME = "voise-hospital-container"
-        PYTHON = ""C:\\Python314\\python.exe""
+        PYTHON = "C:\\Python314\\python.exe"
     }
 
     stages {
