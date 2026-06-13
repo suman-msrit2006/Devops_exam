@@ -1,14 +1,13 @@
 pipeline {
     agent any
 
-      environment {
+    environment {
         DOCKER_IMAGE = "ktmlover/voise-hospital-predictor"
         CONTAINER_NAME = "voise-hospital-container"
         PYTHON = "C:\\Python314\\python.exe"
     }
 
     stages {
-
         stage('Checkout SCM') {
             steps {
                 checkout scm
@@ -67,17 +66,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    bat """
-                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-                        docker push %DOCKER_IMAGE%:latest
-                        docker logout
-                    """
-                }
+                bat "docker push %DOCKER_IMAGE%:latest"
             }
         }
 
@@ -92,7 +81,7 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline  completed successfully!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed!'
