@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 from flask import Flask, render_template, jsonify, request
 from logic import RuleEngine
 import random
@@ -228,4 +226,3 @@ def trigger_scenario(name):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
->>>>>>> e141f61 (App file updated)

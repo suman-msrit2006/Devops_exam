@@ -492,11 +492,6 @@ th {
 td {
     background: rgba(255, 255, 255, 0.03);
     padding: 1rem;
-<<<<<<< HEAD
-    first-child: border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    last-child: border-top-right-radius: 8px;
-=======
 }
 
 td:first-child {
@@ -506,7 +501,6 @@ td:first-child {
 
 td:last-child {
     border-top-right-radius: 8px;
->>>>>>> 20c05b4de276da8ce035d7d2edfc0a921eadb22c
     border-bottom-right-radius: 8px;
 }
 
