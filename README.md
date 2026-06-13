@@ -2,7 +2,7 @@
 
 A real-time dashboard for monitoring and predicting hospital resource shortages. This application simulates a hospital environment, tracking critical metrics like oxygen levels, bed occupancy, staff availability, and medical stocks to provide early warnings and actionable recommendations.
 
-## 🚀 Features.........
+## 🚀 Features
 
 *   **Real-time Dashboard**: Live monitoring of Oxygen, Beds/ICU, Staff, Pharmacy, Blood Bank, and Ventilators.
 *   **Predictive Analysis**: Logic engine that calculates risk scores and identifies critical trends (e.g., Consumption > Refill).
@@ -23,7 +23,7 @@ A real-time dashboard for monitoring and predicting hospital resource shortages.
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/AKSHAY73499/VOISE-HACKATHON.git
+    git clone https://github.com/suman-msrit2006/Devops_exam.git
     cd VOISE-HACKATHON
     ```
 
