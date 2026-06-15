@@ -223,7 +223,7 @@ Configuration panel for hospital administrators.
 ### 5. **Department Details (`department.html`)**
 Focused view for individual departments.
 -   **Drill-down**: Provides a dedicated view for a specific resource (e.g., `/department/oxygen`).
--   **Specific Metrics**: Shows detailed metrics relevant only to that department.
+-   **Specific Metrics**: Shows detailed metrics of relevant only to that department.
 
 ## 🤝 Contributing
 
