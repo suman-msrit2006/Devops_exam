@@ -136,11 +136,6 @@ A real-time dashboard for monitoring and predicting hospital resource shortages.
 
 ## 📦 Installation
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/AKSHAY73499/VOISE-HACKATHON.git
-    cd VOISE-HACKATHON
-    ```
 
 2.  **Install Dependencies**
     Ensure you have Python installed. Install Flask:
