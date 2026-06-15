@@ -441,8 +441,8 @@ h1 {
 }
 
 .btn-normal {
-    background: var(--success-color);
-    color: #000;
+    background: #047857;
+    color: #fff;
 }
 
 .btn-danger {
