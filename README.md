@@ -225,6 +225,4 @@ Focused view for individual departments.
 -   **Drill-down**: Provides a dedicated view for a specific resource (e.g., `/department/oxygen`).
 -   **Specific Metrics**: Shows detailed metrics of relevant only to that department.
 
-## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
